@@ -6,9 +6,21 @@ namespace OrganizationNotificationService.Models;
 
 public class EmailNotification
 {
+    /// <summary>
+    /// Recipient email address
+    /// </summary>
     public string To { get; private set; }
+    /// <summary>
+    /// Subject of the email
+    /// </summary>
     public string Subject { get; private set; }
+    /// <summary>
+    /// Body content of the email
+    /// </summary>
     public string Body { get; private set; }
+    /// <summary>
+    /// Content type of the email, html or text
+    /// </summary>
     public NotificationContentType ContentType { get; private set; }
 
     public EmailNotification(ApplicationNotification applicationNotification)

@@ -17,15 +17,30 @@ public class NotificationsController : ControllerBase
         _notificationService = notificationService;
     }
 
+    /// <summary>
+    /// Returns the notification status and details if exists
+    /// </summary>
+    /// <param name="notificationId"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<ActionResult<Envelope<ApplicationNotification>>> GetNotificationStatus([FromQuery] Guid notificationId)
     {
-        //TODO: Implement an api here that lets clients query for notification
-        return Ok();
+        var notification = await _notificationService.GetNotificationStatus(notificationId);
+        if (notification != null)
+        {
+            return Ok(Envelope.Ok(notification));
+        }
+
+        return NotFound();
     }
 
+    /// <summary>
+    /// Creates a new email notification
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpPost("email")]
-    public async Task<ActionResult<ApplicationNotification>> CreateEmailNotification([FromBody] NotificationRequest request)
+    public async Task<ActionResult<Envelope<NotificationResponse>>> CreateEmailNotification([FromBody] NotificationRequest request)
     {
         try
         {
@@ -40,7 +55,7 @@ public class NotificationsController : ControllerBase
     }
 
     [HttpPost("push")]
-    public async Task<ActionResult<Envelope<ApplicationNotification>>> CreatePushNotification(
+    public async Task<ActionResult<Envelope<NotificationResponse>>> CreatePushNotification(
         [FromBody] NotificationRequest request)
     {
         try

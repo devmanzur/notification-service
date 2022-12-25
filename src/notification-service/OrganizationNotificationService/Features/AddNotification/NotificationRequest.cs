@@ -16,9 +16,10 @@ public class NotificationRequestValidator : BaseFluentValidator<NotificationRequ
 {
     public NotificationRequestValidator()
     {
-        RuleFor(x => x.Recipient).NotEmpty();
-        RuleFor(x => x.Title).NotEmpty();
-        RuleFor(x => x.Body).NotEmpty();
-        RuleFor(x => x.ContentType).NotEmpty().Must(EnumUtils.BelongToType<NotificationContentType>);
+        RuleFor(x => x.Recipient).NotEmpty().WithMessage("Please provide a valid Recipient");
+        RuleFor(x => x.Title).NotEmpty().WithMessage("Please provide a valid title");
+        RuleFor(x => x.Body).NotEmpty().WithMessage("Please provide a valid body");
+        RuleFor(x => x.ContentType).NotEmpty().Must(EnumUtils.BelongToType<NotificationContentType>)
+            .WithMessage("Please provide a valid content type: Text or Html");
     }
 }

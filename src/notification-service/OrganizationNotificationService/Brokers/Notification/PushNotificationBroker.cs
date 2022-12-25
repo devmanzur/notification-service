@@ -10,7 +10,7 @@ public class PushNotificationBroker : INotificationBroker
     {
     }
 
-    public async Task<Result> SendNotification(Models.ApplicationNotification applicationNotification)
+    public async Task<Result> SendNotification(ApplicationNotification applicationNotification)
     {
         try
         {
@@ -33,10 +33,6 @@ public class PushNotificationBroker : INotificationBroker
             // string response = await FirebaseMessaging.DefaultInstance.SendAsync(message);
 
             return Result.Success();
-        }
-        catch (DomainValidationException e)
-        {
-            return Result.Failure(e.Message);
         }
         catch (TimeoutException e)
         {

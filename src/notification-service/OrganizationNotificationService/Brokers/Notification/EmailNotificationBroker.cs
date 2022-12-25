@@ -7,6 +7,9 @@ namespace OrganizationNotificationService.Brokers.Notification;
 
 public class EmailNotificationBroker : INotificationBroker
 {
+    /// <summary>
+    /// The email account that will be used to send the emails, e.g. no-reply@breakingnews.com
+    /// </summary>
     private readonly string _sender;
 
     public EmailNotificationBroker(EmailNotificationBrokerConfiguration configuration)
@@ -18,7 +21,12 @@ public class EmailNotificationBroker : INotificationBroker
                           $"Missing configuration value for {nameof(EmailNotificationBroker)}, for property {nameof(configuration.Sender)}"));
     }
 
-    public async Task<Result> SendNotification(Models.ApplicationNotification applicationNotification)
+    /// <summary>
+    /// Converts and 
+    /// </summary>
+    /// <param name="applicationNotification"></param>
+    /// <returns></returns>
+    public async Task<Result> SendNotification(ApplicationNotification applicationNotification)
     {
         try
         {
@@ -38,10 +46,6 @@ public class EmailNotificationBroker : INotificationBroker
             //     .SendAsync();
 
             return Result.Success();
-        }
-        catch (DomainValidationException e)
-        {
-            return Result.Failure(e.Message);
         }
         catch (TimeoutException e)
         {

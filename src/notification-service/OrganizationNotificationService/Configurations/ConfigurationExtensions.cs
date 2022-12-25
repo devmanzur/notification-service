@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OrganizationNotificationService.BackgroundServices;
 using OrganizationNotificationService.Brokers.Notification;
 using OrganizationNotificationService.Brokers.Persistence;
 using OrganizationNotificationService.Features.AddNotification;
@@ -27,6 +28,7 @@ public static class ConfigurationExtensions
         
         services.AddSingleton(emailConfig);
         services.AddSingleton(fcmConfig);
-
+        
+        services.AddHostedService<ApplicationDataSeedBackgroundService>();
     }
 }

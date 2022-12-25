@@ -17,7 +17,7 @@ public class PushNotification
             throw new InvalidActionException("Something went wrong on our side, please try again later",
                 $"System tried to send push notification: for notification type {applicationNotification.Type}, notification id {applicationNotification.Id}");
         }
-        
+
         DeviceRegistrationToken = applicationNotification.Recipient;
         Title = applicationNotification.Title;
         Body = applicationNotification.Body;
