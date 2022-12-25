@@ -1,6 +1,16 @@
 ﻿namespace OrganizationNotificationService.Models;
 
-public abstract record Result(bool IsSuccess, bool IsFailure, string FailureDescription);
+public abstract record Result(bool IsSuccess, bool IsFailure, string FailureDescription)
+{
+    public static Result Success()
+    {
+        return new SuccessResult();
+    }
+    public static Result Failure(string error)
+    {
+        return new FailureResult(error);
+    }
+}
 
 public record SuccessResult() : Result(true, false, null);
 
