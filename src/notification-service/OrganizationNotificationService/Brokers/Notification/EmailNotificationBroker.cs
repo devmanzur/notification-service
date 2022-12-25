@@ -1,10 +1,9 @@
 ﻿using OrganizationNotificationService.Configurations;
 using OrganizationNotificationService.Exceptions;
 using OrganizationNotificationService.Features.SendNotification;
-using OrganizationNotificationService.Features.SendNotification.Models;
 using OrganizationNotificationService.Models;
 
-namespace OrganizationNotificationService.Brokers;
+namespace OrganizationNotificationService.Brokers.Notification;
 
 public class EmailNotificationBroker : INotificationBroker
 {
@@ -19,12 +18,12 @@ public class EmailNotificationBroker : INotificationBroker
                           $"Missing configuration value for {nameof(EmailNotificationBroker)}, for property {nameof(configuration.Sender)}"));
     }
 
-    public async Task<Result> SendNotification(Notification notification)
+    public async Task<Result> SendNotification(Models.ApplicationNotification applicationNotification)
     {
         try
         {
             // any properties are invalid this will throw DomainValidationException exception here
-            var emailNotification = new EmailNotification(notification);
+            var emailNotification = new EmailNotification(applicationNotification);
 
             // Since we now have all the information required to send and email here, we can use any email sender library
             // I Personally use [FluentEmail](https://github.com/lukencode/FluentEmail)

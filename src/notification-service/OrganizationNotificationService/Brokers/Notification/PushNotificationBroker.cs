@@ -1,9 +1,8 @@
 ﻿using OrganizationNotificationService.Exceptions;
 using OrganizationNotificationService.Features.SendNotification;
-using OrganizationNotificationService.Features.SendNotification.Models;
 using OrganizationNotificationService.Models;
 
-namespace OrganizationNotificationService.Brokers;
+namespace OrganizationNotificationService.Brokers.Notification;
 
 public class PushNotificationBroker : INotificationBroker
 {
@@ -11,12 +10,12 @@ public class PushNotificationBroker : INotificationBroker
     {
     }
 
-    public async Task<Result> SendNotification(Notification notification)
+    public async Task<Result> SendNotification(Models.ApplicationNotification applicationNotification)
     {
         try
         {
             // any properties are invalid this will throw DomainValidationException exception here
-            var pushNotification = new PushNotification(notification);
+            var pushNotification = new PushNotification(applicationNotification);
             // Since we now have all the information required to send and push here, we can use Firebase Admin SDK to send push notification
 
             // var message = new Message()

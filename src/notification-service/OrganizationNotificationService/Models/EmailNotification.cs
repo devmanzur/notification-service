@@ -2,7 +2,7 @@
 using OrganizationNotificationService.Exceptions;
 using OrganizationNotificationService.Utils;
 
-namespace OrganizationNotificationService.Features.SendNotification.Models;
+namespace OrganizationNotificationService.Models;
 
 public class EmailNotification
 {
@@ -11,19 +11,18 @@ public class EmailNotification
     public string Body { get; private set; }
     public NotificationContentType ContentType { get; private set; }
 
-    public EmailNotification(Notification notification)
+    public EmailNotification(ApplicationNotification applicationNotification)
     {
-        if (notification.Type != NotificationType.Email)
+        if (applicationNotification.Type != NotificationType.Email)
         {
             throw new InvalidActionException("Something went wrong on our side, please try again later",
-                $"System tried to send email notification: for notification type {notification.Type}, notification id {notification.Id}");
+                $"System tried to send email notification: for notification type {applicationNotification.Type}, notification id {applicationNotification.Id}");
         }
 
-        To = notification.Recipient;
-        Subject = notification.Title;
-        Body = notification.Body;
-        ContentType = notification.ContentType;
-        RuleValidator.Validate<EmailNotification, EmailNotificationValidator>(this);
+        To = applicationNotification.Recipient;
+        Subject = applicationNotification.Title;
+        Body = applicationNotification.Body;
+        ContentType = applicationNotification.ContentType;
     }
 }
 

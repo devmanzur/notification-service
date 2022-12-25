@@ -2,7 +2,7 @@
 using OrganizationNotificationService.Exceptions;
 using OrganizationNotificationService.Utils;
 
-namespace OrganizationNotificationService.Features.SendNotification.Models;
+namespace OrganizationNotificationService.Models;
 
 public class PushNotification
 {
@@ -10,18 +10,17 @@ public class PushNotification
     public string Title { get; private set; }
     public string Body { get; private set; }
 
-    public PushNotification(Notification notification)
+    public PushNotification(ApplicationNotification applicationNotification)
     {
-        if (notification.Type != NotificationType.PushNotification)
+        if (applicationNotification.Type != NotificationType.PushNotification)
         {
             throw new InvalidActionException("Something went wrong on our side, please try again later",
-                $"System tried to send push notification: for notification type {notification.Type}, notification id {notification.Id}");
+                $"System tried to send push notification: for notification type {applicationNotification.Type}, notification id {applicationNotification.Id}");
         }
         
-        DeviceRegistrationToken = notification.Recipient;
-        Title = notification.Title;
-        Body = notification.Body;
-        RuleValidator.Validate<PushNotification,PushNotificationValidator>(this);
+        DeviceRegistrationToken = applicationNotification.Recipient;
+        Title = applicationNotification.Title;
+        Body = applicationNotification.Body;
     }
 }
 
