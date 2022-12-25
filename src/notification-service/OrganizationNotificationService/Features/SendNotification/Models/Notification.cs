@@ -1,4 +1,4 @@
-﻿namespace OrganizationNotificationService.Features.SendNotification;
+﻿namespace OrganizationNotificationService.Features.SendNotification.Models;
 
 public class Notification
 {

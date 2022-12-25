@@ -1,6 +1,7 @@
 ﻿using OrganizationNotificationService.Configurations;
 using OrganizationNotificationService.Exceptions;
 using OrganizationNotificationService.Features.SendNotification;
+using OrganizationNotificationService.Features.SendNotification.Models;
 using OrganizationNotificationService.Models;
 
 namespace OrganizationNotificationService.Brokers;

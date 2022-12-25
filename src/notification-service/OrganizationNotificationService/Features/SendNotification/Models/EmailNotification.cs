@@ -1,7 +1,8 @@
 ﻿using FluentValidation;
+using OrganizationNotificationService.Exceptions;
 using OrganizationNotificationService.Utils;
 
-namespace OrganizationNotificationService.Features.SendNotification;
+namespace OrganizationNotificationService.Features.SendNotification.Models;
 
 public class EmailNotification
 {
@@ -14,7 +15,7 @@ public class EmailNotification
     {
         if (notification.Type != NotificationType.Email)
         {
-            throw new Exception(
+            throw new InvalidActionException("Something went wrong on our side, please try again later",
                 $"System tried to send email notification: for notification type {notification.Type}, notification id {notification.Id}");
         }
 

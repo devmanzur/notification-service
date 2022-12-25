@@ -1,4 +1,5 @@
-﻿using OrganizationNotificationService.Models;
+﻿using OrganizationNotificationService.Features.SendNotification.Models;
+using OrganizationNotificationService.Models;
 
 namespace OrganizationNotificationService.Features.SendNotification;
 
