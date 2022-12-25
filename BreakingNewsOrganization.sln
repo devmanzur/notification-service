@@ -1,8 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{09FC2738-02F8-4BFB-BE07-A166B3235E8D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{E008251C-0916-46C1-904C-28CFF185E0E2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{DA32B26E-E6CB-4A21-80A4-7170CBF763B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "notification-service", "notification-service", "{E2C7B298-2D61-42F4-98B2-C5F9276322AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrganizationNotificationService", "src\notification-service\OrganizationNotificationService\OrganizationNotificationService.csproj", "{F29BAC13-DB79-4783-9C54-56F97B6177B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E2C7B298-2D61-42F4-98B2-C5F9276322AD} = {09FC2738-02F8-4BFB-BE07-A166B3235E8D}
+		{F29BAC13-DB79-4783-9C54-56F97B6177B2} = {E2C7B298-2D61-42F4-98B2-C5F9276322AD}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F29BAC13-DB79-4783-9C54-56F97B6177B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F29BAC13-DB79-4783-9C54-56F97B6177B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F29BAC13-DB79-4783-9C54-56F97B6177B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F29BAC13-DB79-4783-9C54-56F97B6177B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

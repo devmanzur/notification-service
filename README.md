@@ -37,7 +37,7 @@
 ## Tools
 - .NET 6 and C# for developing both notification service and plugin
 - Sql server as the isolated database within Notification Service
-- Entity Framework 7 as ORM, ***especially we get to use the new ExecuteUpdate() function introduced with this***
+- Entity Framework 7 as ORM, ***especially we get to use the new ExecuteUpdate() function introduced with this version***
 - RabbitMQ as the MessageQueue sitting between the plugin and the notification Service
 - EasyNetQ for easy to use Wrapper over RabbitMQ
 - DocFX for generating dynamic documentation from XML Comments and Markdown files
