@@ -82,7 +82,7 @@ public class ApplicationPushNotificationValidator : BaseFluentValidator<Applicat
         RuleFor(x => x.Recipient).NotEmpty();
         RuleFor(x => x.Title).NotEmpty();
         RuleFor(x => x.Body).NotEmpty();
-        RuleFor(x => x.ContentType).NotEmpty().Must(x => x == NotificationContentType.Text)
+        RuleFor(x => x.ContentType).NotNull().Must(x => x == NotificationContentType.Text)
             .WithMessage("Only text is supported as push notification content");
         RuleFor(x => x.Type).NotEmpty().Must(x => x == NotificationType.PushNotification);
     }

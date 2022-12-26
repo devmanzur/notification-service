@@ -49,7 +49,7 @@ public class NotificationsController : ControllerBase
         try
         {
             RuleValidator.Validate<NotificationRequest, NotificationRequestValidator>(request);
-            var createNotification = request.Type switch
+            var createNotification = request.GetType() switch
             {
                 NotificationType.Email => await _notificationService.AddNewEmailNotification(request),
                 NotificationType.PushNotification => await _notificationService.AddNewPushNotification(request),

@@ -12,7 +12,7 @@ public class NotificationRequest
     public string ContentType { get; set; }
     public string NotificationType { get; set; }
 
-    public NotificationType Type => NotificationType.ToEnum<NotificationType>();
+    public NotificationType GetType() => NotificationType.ToEnum<NotificationType>();
 }
 
 public class NotificationRequestValidator : BaseFluentValidator<NotificationRequest>

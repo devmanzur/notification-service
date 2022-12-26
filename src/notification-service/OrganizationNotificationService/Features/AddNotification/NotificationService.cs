@@ -30,7 +30,7 @@ public class NotificationService
     public async Task<NotificationResponse> AddNewPushNotification(NotificationRequest request)
     {
         var notification = new ApplicationNotification(request.Recipient, request.Title, request.Body,
-            request.ContentType.ToEnum<NotificationContentType>(), NotificationType.Email);
+            request.ContentType.ToEnum<NotificationContentType>(), NotificationType.PushNotification);
 
         // validates the entity is a valid push notification
         RuleValidator.Validate<ApplicationNotification, ApplicationPushNotificationValidator>(notification);
