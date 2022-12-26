@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrganizationNotificationService.BackgroundServices;
+using OrganizationNotificationService.BackgroundServices.Jobs;
 using OrganizationNotificationService.Brokers.Notification;
 using OrganizationNotificationService.Brokers.Persistence;
-using OrganizationNotificationService.Features.AddNotification;
+using OrganizationNotificationService.Features.SendNotification;
+using Quartz;
 
 namespace OrganizationNotificationService.Configurations;
 
@@ -26,5 +28,24 @@ public static class ConfigurationExtensions
         
         // Inject hosted service
         services.AddHostedService<ApplicationDataSeedBackgroundService>();
+        
+        services.AddQuartz(q =>
+        {
+            // Create a "key" for the job
+            var jobKey = new JobKey(nameof(SendPendingNotificationsJob));
+
+            q.UseMicrosoftDependencyInjectionJobFactory();
+
+            // Register the job with the DI container
+            q.AddJob<SendPendingNotificationsJob>(opts => opts.WithIdentity(jobKey));
+
+            // Create a trigger for the job
+            q.AddTrigger(opts => opts
+                .ForJob(jobKey) // link to the CompleteTodoItemJob
+                .WithIdentity($"{jobKey}-trigger") 
+                .WithCronSchedule("0 */2 * * * ?")); // run every 3 minutes
+
+        });
+        services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
     }
 }

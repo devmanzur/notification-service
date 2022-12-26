@@ -1,8 +1,6 @@
-using System.Diagnostics;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using OrganizationNotificationService.Exceptions;
-using OrganizationNotificationService.Features.AddNotification;
+using OrganizationNotificationService.Features.SendNotification;
 using OrganizationNotificationService.Models;
 using OrganizationNotificationService.Utils;
 

@@ -1,6 +1,4 @@
-﻿using OrganizationNotificationService.Models;
-
-namespace OrganizationNotificationService.Features.AddNotification;
+﻿namespace OrganizationNotificationService.Models;
 
 public class NotificationResponse
 {

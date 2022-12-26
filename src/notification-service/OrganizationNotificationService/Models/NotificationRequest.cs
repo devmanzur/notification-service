@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
-using OrganizationNotificationService.Models;
 using OrganizationNotificationService.Utils;
 
-namespace OrganizationNotificationService.Features.AddNotification;
+namespace OrganizationNotificationService.Models;
 
 public class NotificationRequest
 {

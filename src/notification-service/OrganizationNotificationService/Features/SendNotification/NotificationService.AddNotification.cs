@@ -1,19 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OrganizationNotificationService.Brokers.Persistence;
-using OrganizationNotificationService.Models;
+﻿using OrganizationNotificationService.Models;
 using OrganizationNotificationService.Utils;
 
-namespace OrganizationNotificationService.Features.AddNotification;
+namespace OrganizationNotificationService.Features.SendNotification;
 
-public class NotificationService
+public partial class NotificationService
 {
-    private readonly NotificationDbContext _dbContext;
-
-    public NotificationService(NotificationDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public async Task<NotificationResponse> AddNewEmailNotification(NotificationRequest request)
     {
         var notification = new ApplicationNotification(request.Recipient, request.Title, request.Body,
@@ -37,19 +28,6 @@ public class NotificationService
 
         _dbContext.Notifications.Add(notification);
         await _dbContext.SaveChangesAsync();
-
-        return new NotificationResponse(notification);
-    }
-
-    public async Task<NotificationResponse?> GetNotificationStatus(Guid notificationId)
-    {
-        var notification =
-            await _dbContext.Notifications.AsNoTracking()
-                .SingleOrDefaultAsync(x => x.Id == notificationId);
-        if (notification == null)
-        {
-            return null;
-        }
 
         return new NotificationResponse(notification);
     }
