@@ -1,13 +1,30 @@
-﻿namespace OrganizationNotificationPlugin.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace OrganizationNotificationPlugin.Models;
 
 public class NotificationResponse
 {
+    [JsonPropertyName("id")]
     public Guid Id { get; set; }
-    public string Recipient { get; set; }
-    public string Title { get; set; }
-    public string Body { get; set; }
-    public NotificationContentType ContentType { get; set; }
-    public NotificationType NotificationType { get; set; }
-    public NotificationStatus Status { get; set; }
-    public DateTime? CreatedAt { get; set; }
+
+    [JsonPropertyName("recipient")]
+    public string? Recipient { get; set; }
+
+    [JsonPropertyName("title")]
+    public string? Title { get; set; }
+
+    [JsonPropertyName("body")]
+    public string? BodyBody { get; set; }
+
+    [JsonPropertyName("contentType")]
+    public string? ContentType { get; set; }
+
+    [JsonPropertyName("notificationType")]
+    public string? NotificationType { get; set; }
+
+    [JsonPropertyName("status")]
+    public string? Status { get; set; }
+
+    [JsonPropertyName("createdAt")]
+    public DateTimeOffset CreatedAt { get; set; }
 }

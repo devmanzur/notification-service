@@ -14,6 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "notification-plugin", "noti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrganizationNotificationPlugin", "src\notification-plugin\OrganizationNotificationPlugin\OrganizationNotificationPlugin.csproj", "{9CC8D8C5-98FD-4D2A-A1C3-C00302F2F20C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{8B566E41-57BE-46D6-A5C4-611A1A84DE33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BreakingNewsService", "src\demo\BreakingNewsService\BreakingNewsService.csproj", "{C138438D-60D3-4DEF-8081-93CBBE436F2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +28,8 @@ Global
 		{F29BAC13-DB79-4783-9C54-56F97B6177B2} = {E2C7B298-2D61-42F4-98B2-C5F9276322AD}
 		{FF76BB64-12C9-4B61-9609-DA571AD63832} = {09FC2738-02F8-4BFB-BE07-A166B3235E8D}
 		{9CC8D8C5-98FD-4D2A-A1C3-C00302F2F20C} = {FF76BB64-12C9-4B61-9609-DA571AD63832}
+		{8B566E41-57BE-46D6-A5C4-611A1A84DE33} = {09FC2738-02F8-4BFB-BE07-A166B3235E8D}
+		{C138438D-60D3-4DEF-8081-93CBBE436F2A} = {8B566E41-57BE-46D6-A5C4-611A1A84DE33}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F29BAC13-DB79-4783-9C54-56F97B6177B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -34,5 +40,9 @@ Global
 		{9CC8D8C5-98FD-4D2A-A1C3-C00302F2F20C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CC8D8C5-98FD-4D2A-A1C3-C00302F2F20C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CC8D8C5-98FD-4D2A-A1C3-C00302F2F20C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C138438D-60D3-4DEF-8081-93CBBE436F2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C138438D-60D3-4DEF-8081-93CBBE436F2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C138438D-60D3-4DEF-8081-93CBBE436F2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C138438D-60D3-4DEF-8081-93CBBE436F2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

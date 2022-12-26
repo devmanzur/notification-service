@@ -23,7 +23,7 @@ public static class HttpClientExtensions
         return sb.ToString();
     }
 
-    public static async Task<T> SendPostRequestAsync<T>(this HttpClient httpClient, RequestModel requestModel)
+    public static async Task<T> SendPostRequestAsync<T>(this HttpClient httpClient, RequestModel requestModel) where T : class
     {
         httpClient.DefaultRequestHeaders.Clear();
         requestModel.Headers.ForEach(x => httpClient.DefaultRequestHeaders.Add(x.Key, x.Value));
@@ -34,7 +34,8 @@ public static class HttpClientExtensions
                 new StringContent(requestModel.JsonBody, Encoding.UTF8, "application/json"));
         if (response.IsSuccessStatusCode)
         {
-            return await response.Content.ReadFromJsonAsync<T>() ?? throw new Exception("Failed to parse response");
+            var stringContent = await response.Content.ReadAsStringAsync();
+            return AppJsonUtils.Deserialize<T>(stringContent) ?? throw new Exception("Failed to parse response");
         }
 
         var error = await response.Content.ReadAsStringAsync();

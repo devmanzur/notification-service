@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic;
 using OrganizationNotificationPlugin.Models;
 using OrganizationNotificationPlugin.Utils;
 
@@ -8,22 +9,23 @@ namespace OrganizationNotificationPlugin.Brokers;
 /// </summary>
 public class HttpNotificationBroker : INotificationBroker
 {
-    private readonly HttpClient _client;
+    private readonly IHttpClientFactory _httpClientFactory;
 
-    public HttpNotificationBroker(HttpClient httpClient)
+    public HttpNotificationBroker(IHttpClientFactory  httpClientFactory)
     {
-        _client = httpClient;
+        _httpClientFactory = httpClientFactory;
     }
 
     public async Task<NotificationResponse> PublishAsync(AppNotification notification)
     {
-        var response = await _client.SendPostRequestAsync<EnvelopeResponse<NotificationResponse>>(
+        var client = _httpClientFactory.CreateClient(PluginConstants.ClientName);
+        var response = await client.SendPostRequestAsync<EnvelopeResponse<NotificationResponse>>(
             new RequestModel($"api/notifications").AddJsonBody(notification));
         if (response.IsSuccess)
         {
             return response.Body;
         }
 
-        throw new HttpRequestException(response.Errors?.ToString() ?? "Failed to complete request");
+        throw new HttpRequestException( "Failed to complete request");
     }
 }

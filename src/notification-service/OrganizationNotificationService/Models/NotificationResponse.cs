@@ -11,6 +11,11 @@ public class NotificationResponse
     public string Status { get; set; }
     public string? CreatedAt { get; set; }
 
+    public NotificationResponse()
+    {
+        
+    }
+
     public NotificationResponse(ApplicationNotification notification)
     {
         Recipient = notification.Recipient;

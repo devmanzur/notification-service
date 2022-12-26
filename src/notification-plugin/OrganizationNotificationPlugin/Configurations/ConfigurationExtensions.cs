@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrganizationNotificationPlugin.Brokers;
+using OrganizationNotificationPlugin.Utils;
 
 namespace OrganizationNotificationPlugin.Configurations;
 
@@ -12,7 +13,7 @@ public static class ConfigurationExtensions
         IConfiguration configuration, string configKey)
     {
         services.AddScoped<INotificationBroker, HttpNotificationBroker>();
-        services.AddHttpClient<HttpNotificationBroker>(c =>
+        services.AddHttpClient(PluginConstants.ClientName,c =>
             c.BaseAddress = new Uri(configuration.GetSection(configKey)[ServerUrl] ??
                                     throw new ArgumentNullException(ServerUrl,
                                         "ServerUrl not defined within the provided configuration body")));
