@@ -6,7 +6,11 @@ namespace OrganizationNotificationService.Exceptions;
 /// </summary>
 public abstract class BaseApplicationException : Exception
 {
-
+    /// <summary>
+    /// Http status code that indicates the cause the exception
+    /// 500 error means something went wrong in our system
+    /// 400 error means something is wrong with the provided data and cannot pass validation
+    /// </summary>
     public int StatusCode { get; private set; }
     /// <summary>
     /// Only use this to show error to user, the default exception message will be used to 

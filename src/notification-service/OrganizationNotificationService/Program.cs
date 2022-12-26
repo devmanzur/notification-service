@@ -10,6 +10,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddNotificationInfrastructure(builder.Configuration);
+builder.Host.AddSerilog(builder.Configuration);
 
 
 var app = builder.Build();

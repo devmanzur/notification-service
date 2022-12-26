@@ -10,6 +10,11 @@ namespace OrganizationNotificationService.Configurations;
 
 public static class ConfigurationExtensions
 {
+    /// <summary>
+    /// Injects all the dependencies required to run the notification service
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
     public static void AddNotificationInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         // Inject notification brokers
@@ -47,5 +52,7 @@ public static class ConfigurationExtensions
 
         });
         services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+        
+        
     }
 }

@@ -15,6 +15,7 @@ public partial class NotificationService
 
         _dbContext.Notifications.Add(notification);
         await _dbContext.SaveChangesAsync();
+        
         return new NotificationResponse(notification);
     }
 

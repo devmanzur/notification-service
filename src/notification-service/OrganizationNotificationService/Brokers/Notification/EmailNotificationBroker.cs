@@ -8,13 +8,16 @@ namespace OrganizationNotificationService.Brokers.Notification;
 
 public class EmailNotificationBroker : INotificationBroker
 {
+    private readonly ILogger<EmailNotificationBroker> _logger;
+
     /// <summary>
     /// The email account that will be used to send the emails, e.g. no-reply@breakingnews.com
     /// </summary>
     private readonly string _sender;
 
-    public EmailNotificationBroker(IOptionsMonitor<EmailNotificationBrokerConfiguration > optionsMonitor)
+    public EmailNotificationBroker(IOptionsMonitor<EmailNotificationBrokerConfiguration > optionsMonitor,ILogger<EmailNotificationBroker> logger)
     {
+        _logger = logger;
         var configuration = optionsMonitor.CurrentValue;
         _sender = configuration.Sender ??
                   throw new SystemConfigurationMissingException(
@@ -24,7 +27,7 @@ public class EmailNotificationBroker : INotificationBroker
     }
 
     /// <summary>
-    /// Converts and 
+    /// Validates incoming app notification and sends email 
     /// </summary>
     /// <param name="applicationNotification"></param>
     /// <returns></returns>
@@ -32,6 +35,7 @@ public class EmailNotificationBroker : INotificationBroker
     {
         try
         {
+            _logger.LogInformation("Sending notification {NotificationId}", applicationNotification.Id);
             // any properties are invalid this will throw DomainValidationException exception here
             var emailNotification = new EmailNotification(applicationNotification);
 
@@ -47,10 +51,17 @@ public class EmailNotificationBroker : INotificationBroker
             //     .Body(emailNotification.Body)
             //     .SendAsync();
 
+            _logger.LogInformation("Notification sent successfully {NotificationId}",applicationNotification.Id);
             return Result.Success();
+        }
+        catch (DomainValidationException e)
+        {
+            _logger.LogError(e,"A validation error occurred while sending notification");
+            throw;
         }
         catch (TimeoutException e)
         {
+            _logger.LogError(e,"Failed to send notification");
             return Result.Failure(e.Message);
         }
     }

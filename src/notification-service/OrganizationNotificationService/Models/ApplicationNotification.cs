@@ -5,6 +5,9 @@ namespace OrganizationNotificationService.Models;
 
 public class ApplicationNotification : BaseEntity, IAuditable
 {
+    /// <summary>
+    /// Empty constructor used by ef core
+    /// </summary>
     protected ApplicationNotification()
     {
     }
@@ -84,7 +87,7 @@ public class ApplicationPushNotificationValidator : BaseFluentValidator<Applicat
         RuleFor(x => x.Body).NotEmpty();
         RuleFor(x => x.ContentType).NotNull().Must(x => x == NotificationContentType.Text)
             .WithMessage("Only text is supported as push notification content");
-        RuleFor(x => x.Type).NotEmpty().Must(x => x == NotificationType.PushNotification);
+        RuleFor(x => x.Type).NotNull().Must(x => x == NotificationType.PushNotification);
     }
 }
 
@@ -96,6 +99,6 @@ public class ApplicationEmailNotificationValidator : BaseFluentValidator<Applica
         RuleFor(x => x.Title).NotEmpty();
         RuleFor(x => x.Body).NotEmpty();
         RuleFor(x => x.ContentType).NotNull();
-        RuleFor(x => x.Type).NotEmpty().Must(x => x == NotificationType.Email);
+        RuleFor(x => x.Type).NotNull().Must(x => x == NotificationType.Email);
     }
 }

@@ -11,10 +11,12 @@ namespace OrganizationNotificationService.Controllers;
 public class NotificationsController : ControllerBase
 {
     private readonly NotificationService _notificationService;
+    private readonly ILogger<NotificationsController> _logger;
 
-    public NotificationsController(NotificationService notificationService)
+    public NotificationsController(NotificationService notificationService,ILogger<NotificationsController> logger)
     {
         _notificationService = notificationService;
+        _logger = logger;
     }
 
     /// <summary>
@@ -58,6 +60,7 @@ public class NotificationsController : ControllerBase
         }
         catch (DomainValidationException e)
         {
+            _logger.LogError(e,"Failed to add notification due to validation errors");
             return BadRequest(Envelope.Error(e));
         }
     }

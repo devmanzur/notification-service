@@ -1,5 +1,10 @@
 ﻿namespace OrganizationNotificationService.Models;
-
+/// <summary>
+/// Result object indicating the result of an action/ command
+/// </summary>
+/// <param name="IsSuccess"></param>
+/// <param name="IsFailure"></param>
+/// <param name="FailureDescription"></param>
 public abstract record Result(bool IsSuccess, bool IsFailure, string FailureDescription)
 {
     public static Result Success()

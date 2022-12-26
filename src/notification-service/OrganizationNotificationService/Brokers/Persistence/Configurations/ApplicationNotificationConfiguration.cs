@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OrganizationNotificationService.Models;
 
 namespace OrganizationNotificationService.Brokers.Persistence.Configurations;
-
+/// <summary>
+/// Configures the ApplicationNotification model
+/// </summary>
 public class ApplicationNotificationConfiguration : IEntityTypeConfiguration<ApplicationNotification>
 {
     public void Configure(EntityTypeBuilder<ApplicationNotification> builder)

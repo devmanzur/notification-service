@@ -10,13 +10,15 @@ public partial class NotificationService
     private readonly NotificationDbContext _dbContext;
     private readonly EmailNotificationBroker _emailNotificationBroker;
     private readonly PushNotificationBroker _pushNotificationBroker;
+    private readonly ILogger<NotificationService> _logger;
 
     public NotificationService(NotificationDbContext dbContext, EmailNotificationBroker emailNotificationBroker,
-        PushNotificationBroker pushNotificationBroker)
+        PushNotificationBroker pushNotificationBroker,ILogger<NotificationService> logger)
     {
         _dbContext = dbContext;
         _emailNotificationBroker = emailNotificationBroker;
         _pushNotificationBroker = pushNotificationBroker;
+        _logger = logger;
     }
 
     public async Task<NotificationResponse?> GetNotificationStatus(Guid notificationId)
@@ -35,8 +37,8 @@ public partial class NotificationService
     public async Task<List<ApplicationNotification>> GetPendingNotifications()
     {
         return await _dbContext.Notifications.AsNoTracking().Where(x => x.Status == NotificationStatus.Pending)
-            .Take(50)
             .OrderBy(x => x.CreatedAt)
+            .Take(50)
             .ToListAsync();
     }
 }
