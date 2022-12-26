@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EasyNetQ;
+using Microsoft.EntityFrameworkCore;
 using OrganizationNotificationService.BackgroundServices;
 using OrganizationNotificationService.BackgroundServices.Jobs;
 using OrganizationNotificationService.Brokers.Notification;
@@ -10,6 +11,7 @@ namespace OrganizationNotificationService.Configurations;
 
 public static class ConfigurationExtensions
 {
+    private const string QueueConnectionStringKey = "ConnectionString";
     /// <summary>
     /// Injects all the dependencies required to run the notification service
     /// </summary>
@@ -53,6 +55,11 @@ public static class ConfigurationExtensions
         });
         services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
         
-        
+        //easyNetQ
+        var bus = RabbitHutch.CreateBus(configuration.GetSection("RabbitMq")[QueueConnectionStringKey] ??
+                                        throw new ArgumentNullException(QueueConnectionStringKey,
+                                            "QueueConnectionString not defined within the provided configuration body"));
+        services.AddSingleton(bus);
+        services.AddHostedService<MessageQueueSubscriber>();
     }
 }

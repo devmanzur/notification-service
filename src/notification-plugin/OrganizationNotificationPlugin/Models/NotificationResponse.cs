@@ -14,7 +14,7 @@ public class NotificationResponse
     public string? Title { get; set; }
 
     [JsonPropertyName("body")]
-    public string? BodyBody { get; set; }
+    public string? Body { get; set; }
 
     [JsonPropertyName("contentType")]
     public string? ContentType { get; set; }

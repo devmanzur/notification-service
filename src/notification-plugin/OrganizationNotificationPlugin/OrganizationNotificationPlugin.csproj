@@ -7,10 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="EasyNetQ" Version="7.3.7" />
       <PackageReference Include="FluentValidation" Version="11.4.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\shared\BreakingNews.Messages\BreakingNews.Messages.csproj" />
     </ItemGroup>
 
 </Project>
