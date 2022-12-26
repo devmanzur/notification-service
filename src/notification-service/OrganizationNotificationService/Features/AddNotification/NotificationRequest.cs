@@ -10,6 +10,9 @@ public class NotificationRequest
     public string Title { get; set; }
     public string Body { get; set; }
     public string ContentType { get; set; }
+    public string NotificationType { get; set; }
+
+    public NotificationType Type => NotificationType.ToEnum<NotificationType>();
 }
 
 public class NotificationRequestValidator : BaseFluentValidator<NotificationRequest>
@@ -21,5 +24,7 @@ public class NotificationRequestValidator : BaseFluentValidator<NotificationRequ
         RuleFor(x => x.Body).NotEmpty().WithMessage("Please provide a valid body");
         RuleFor(x => x.ContentType).NotEmpty().Must(EnumUtils.BelongToType<NotificationContentType>)
             .WithMessage("Please provide a valid content type: Text or Html");
+        RuleFor(x => x.NotificationType).NotEmpty().Must(EnumUtils.BelongToType<NotificationType>)
+            .WithMessage("Please provide a valid notification type: Email or PushNotification");
     }
 }

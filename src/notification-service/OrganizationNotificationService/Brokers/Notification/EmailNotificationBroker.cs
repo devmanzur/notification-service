@@ -1,4 +1,5 @@
-﻿using OrganizationNotificationService.Configurations;
+﻿using Microsoft.Extensions.Options;
+using OrganizationNotificationService.Configurations;
 using OrganizationNotificationService.Exceptions;
 using OrganizationNotificationService.Features.SendNotification;
 using OrganizationNotificationService.Models;
@@ -12,8 +13,9 @@ public class EmailNotificationBroker : INotificationBroker
     /// </summary>
     private readonly string _sender;
 
-    public EmailNotificationBroker(EmailNotificationBrokerConfiguration configuration)
+    public EmailNotificationBroker(IOptionsMonitor<EmailNotificationBrokerConfiguration > optionsMonitor)
     {
+        var configuration = optionsMonitor.CurrentValue;
         _sender = configuration.Sender ??
                   throw new SystemConfigurationMissingException(
                       "Something went wrong on our side, please try again later",

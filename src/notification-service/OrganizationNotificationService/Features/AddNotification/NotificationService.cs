@@ -20,7 +20,7 @@ public class NotificationService
             request.ContentType.ToEnum<NotificationContentType>(), NotificationType.Email);
 
         // validates the entity is a valid email notification
-        RuleValidator.Validate<EmailNotification, EmailNotificationValidator>(new EmailNotification(notification));
+        RuleValidator.Validate<ApplicationNotification, ApplicationEmailNotificationValidator>(notification);
 
         _dbContext.Notifications.Add(notification);
         await _dbContext.SaveChangesAsync();
@@ -33,7 +33,7 @@ public class NotificationService
             request.ContentType.ToEnum<NotificationContentType>(), NotificationType.Email);
 
         // validates the entity is a valid push notification
-        RuleValidator.Validate<PushNotification, PushNotificationValidator>(new PushNotification(notification));
+        RuleValidator.Validate<ApplicationNotification, ApplicationPushNotificationValidator>(notification);
 
         _dbContext.Notifications.Add(notification);
         await _dbContext.SaveChangesAsync();

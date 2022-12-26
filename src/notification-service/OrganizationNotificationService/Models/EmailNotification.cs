@@ -35,6 +35,7 @@ public class EmailNotification
         Subject = applicationNotification.Title;
         Body = applicationNotification.Body;
         ContentType = applicationNotification.ContentType;
+        RuleValidator.Validate<EmailNotification,EmailNotificationValidator>(this);
     }
 }
 

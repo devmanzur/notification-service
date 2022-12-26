@@ -21,14 +21,10 @@ public static class ConfigurationExtensions
             options.UseSqlServer(configuration.GetConnectionString("NotificationServiceDatabase"));
         });
         // Inject broker configurations
-        EmailNotificationBrokerConfiguration emailConfig = new EmailNotificationBrokerConfiguration();
-        configuration.GetSection("EmailClient").Bind(emailConfig);
-        PushNotificationBrokerConfiguration fcmConfig = new PushNotificationBrokerConfiguration();
-        configuration.GetSection("FCM").Bind(fcmConfig);
+        services.Configure<EmailNotificationBrokerConfiguration>(configuration.GetSection("EmailClient"));
+        services.Configure<PushNotificationBrokerConfiguration>(configuration.GetSection("FCM"));
         
-        services.AddSingleton(emailConfig);
-        services.AddSingleton(fcmConfig);
-        
+        // Inject hosted service
         services.AddHostedService<ApplicationDataSeedBackgroundService>();
     }
 }

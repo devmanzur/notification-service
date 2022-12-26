@@ -21,6 +21,7 @@ public class PushNotification
         DeviceRegistrationToken = applicationNotification.Recipient;
         Title = applicationNotification.Title;
         Body = applicationNotification.Body;
+        RuleValidator.Validate<PushNotification,PushNotificationValidator>(this);
     }
 }
 
