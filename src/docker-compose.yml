@@ -1,0 +1,22 @@
+name: notification_service
+
+services:
+  notification.db:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+  notification.api:
+    image: ${DOCKER_REGISTRY-}notification-api
+    build:
+      context: .
+      dockerfile: notification-service/OrganizationNotificationService/Dockerfile
+    container_name: 'notification.api'
+  breakingnews.api:
+    image: ${DOCKER_REGISTRY-}breakingnews-api
+    build:
+      context: .
+      dockerfile: demo/BreakingNewsService/Dockerfile
+    container_name: 'breakingnews.api'
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
+volumes:
+  notification_db_data:

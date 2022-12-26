@@ -1,0 +1,40 @@
+name: notification-service
+
+services:
+  notification.db:
+    container_name: notification.db
+    environment:
+      SA_PASSWORD: "SwN12345678"
+      ACCEPT_EULA: "Y"
+    restart: always
+    ports:
+      - "1433:1433"
+    volumes:
+      - notification_db_data:/var/opt/mssql/data
+  
+  rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  
+  notification.api:
+    container_name: 'notification.api'
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:NotificationServiceDatabase=Server=notification.db;Database=NotificationDb;User Id=sa;Password=SwN12345678;TrustServerCertificate=true"
+    depends_on:
+      - notification.db
+#      - rabbitmq
+    ports:
+      - "8000:80"
+  breakingnews.api:
+    container_name: 'breakingnews.api'
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "NotificationPlugin:ServerUrl=http://notification.api"
+#    depends_on:
+#      - rabbitmq
+    ports:
+      - "8001:80"

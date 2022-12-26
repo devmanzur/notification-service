@@ -1,4 +1,3 @@
-using Microsoft.VisualBasic;
 using OrganizationNotificationPlugin.Models;
 using OrganizationNotificationPlugin.Utils;
 
