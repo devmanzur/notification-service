@@ -5,9 +5,17 @@ using OrganizationNotificationPlugin.Utils;
 
 namespace OrganizationNotificationPlugin;
 
+/// Example:
+// var aggregatePlugin = AggregateNotificationPluginProvider.Create()
+//     .WithEmailPlugin(new EmailNotificationPlugin(broker))
+//     .WithPushNotificationPlugin(new PushNotificationPlugin(broker))
+//     .Build();
+//
+// aggregatePlugin.SendNotificationsAsync(_notification);
 public class AggregateNotificationPlugin
 {
     private readonly Dictionary<NotificationType, INotificationPlugin> _notificationPlugins;
+    
 
     public AggregateNotificationPlugin(Dictionary<NotificationType, INotificationPlugin> notificationPlugins)
     {
@@ -42,19 +50,18 @@ public class AggregateNotificationPlugin
     }
 }
 
-public interface IAggregateNotificationPluginBuilder
+public interface IAggregateNotificationPluginBuilder : IAggregateNotificationPluginsProvider
 {
     AggregateNotificationPlugin Build();
 }
 
-public interface IAggregateNotificationPluginsBuilder
+public interface IAggregateNotificationPluginsProvider
 {
     IAggregateNotificationPluginBuilder WithPushNotificationPlugin(PushNotificationPlugin notificationPlugin);
     IAggregateNotificationPluginBuilder WithEmailPlugin(EmailNotificationPlugin notificationPlugin);
 }
 
-public class AggregateNotificationPluginBuilder : IAggregateNotificationPluginBuilder,
-    IAggregateNotificationPluginsBuilder
+public class AggregateNotificationPluginBuilder : IAggregateNotificationPluginBuilder
 {
     private static Dictionary<NotificationType, INotificationPlugin> _plugins = new();
 
@@ -62,7 +69,7 @@ public class AggregateNotificationPluginBuilder : IAggregateNotificationPluginBu
     {
     }
 
-    public static IAggregateNotificationPluginsBuilder Create() => new AggregateNotificationPluginBuilder();
+    public static IAggregateNotificationPluginsProvider Create() => new AggregateNotificationPluginBuilder();
 
     public IAggregateNotificationPluginBuilder WithEmailPlugin(EmailNotificationPlugin notificationPlugin)
     {

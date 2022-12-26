@@ -3,14 +3,16 @@ using OrganizationNotificationPlugin.Utils;
 
 namespace OrganizationNotificationPlugin.Brokers;
 
+/// <summary>
+/// Broker for the notification service, this uses REST API Calls to communicate with our service
+/// </summary>
 public class HttpNotificationBroker : INotificationBroker
 {
     private readonly HttpClient _client;
 
-    public HttpNotificationBroker(NotificationSinkConfiguration notificationSinkConfiguration)
+    public HttpNotificationBroker(HttpClient httpClient)
     {
-        _client = new HttpClient();
-        _client.BaseAddress = new Uri(notificationSinkConfiguration.ServerUrl);
+        _client = httpClient;
     }
 
     public async Task<NotificationResponse> PublishAsync(AppNotification notification)
