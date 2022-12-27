@@ -5,17 +5,20 @@ using OrganizationNotificationPlugin.Utils;
 
 namespace OrganizationNotificationPlugin;
 
-/// Example:
-// var aggregatePlugin = AggregateNotificationPluginProvider.Create()
+/// <summary>
+/// The aggregate plugin to combine and use multiple plugins at once
+/// <example>
+//      var aggregatePlugin = AggregateNotificationPluginProvider.Create()
 //     .WithEmailPlugin(new EmailNotificationPlugin(broker))
 //     .WithPushNotificationPlugin(new PushNotificationPlugin(broker))
 //     .Build();
-//
 // aggregatePlugin.SendNotificationsAsync(_notification);
+/// </example>
+/// </summary>
 public class AggregateNotificationPlugin
 {
     private readonly Dictionary<NotificationType, INotificationPlugin> _notificationPlugins;
-    
+
 
     public AggregateNotificationPlugin(Dictionary<NotificationType, INotificationPlugin> notificationPlugins)
     {

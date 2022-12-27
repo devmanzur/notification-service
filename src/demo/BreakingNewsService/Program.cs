@@ -9,7 +9,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddNotificationPluginWithAsyncBroker(builder.Configuration,"NotificationPlugin");
+builder.Services.AddNotificationPluginWithAsyncBroker(builder.Configuration.GetSection("NotificationPlugin")["ConnectionString"]);
 
 var app = builder.Build();
 

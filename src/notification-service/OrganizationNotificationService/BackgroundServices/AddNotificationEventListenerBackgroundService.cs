@@ -7,6 +7,9 @@ using OrganizationNotificationService.Utils;
 
 namespace OrganizationNotificationService.BackgroundServices;
 
+/// <summary>
+/// RabbitMQ based notification listener that listens for any incoming NotificationMessage AMQP RPC Calls
+/// </summary>
 public class AddNotificationEventListenerBackgroundService : BackgroundService
 {
     private readonly IBus _bus;
@@ -20,8 +23,13 @@ public class AddNotificationEventListenerBackgroundService : BackgroundService
         _logger = logger;
         _scope = serviceProvider.CreateScope();
     }
-
-
+    
+    /// <summary>
+    /// Validates and stores the email notification
+    /// </summary>
+    /// <param name="dbContext"></param>
+    /// <param name="request"></param>
+    /// <returns></returns>
     private async Task<NotificationResponse> AddNewEmailNotification(NotificationDbContext dbContext,
         NotificationRequest request)
     {
@@ -37,6 +45,12 @@ public class AddNotificationEventListenerBackgroundService : BackgroundService
         return new NotificationResponse(notification);
     }
 
+    /// <summary>
+    /// Validates and stores the push notification
+    /// </summary>
+    /// <param name="dbContext"></param>
+    /// <param name="request"></param>
+    /// <returns></returns>
     private async Task<NotificationResponse> AddNewPushNotification(NotificationDbContext dbContext,
         NotificationRequest request)
     {
@@ -52,6 +66,11 @@ public class AddNotificationEventListenerBackgroundService : BackgroundService
         return new NotificationResponse(notification);
     }
 
+    /// <summary>
+    /// Runs whenever a NotificationMessage AMPQ RPC Call is received 
+    /// </summary>
+    /// <param name="stoppingToken"></param>
+    /// <exception cref="DomainValidationException"></exception>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await _bus.Rpc.RespondAsync<NotificationMessage, NotificationResponseMessage>(async message =>
@@ -80,9 +99,9 @@ public class AddNotificationEventListenerBackgroundService : BackgroundService
                         _ => throw new DomainValidationException("Invalid Notification type",
                             "Attempted to create unsupported notification type")
                     };
-                    
-                    _logger.LogInformation("Notification saved, {NotificationId}",createNotification.Id);
-                    
+
+                    _logger.LogInformation("Notification saved, {NotificationId}", createNotification.Id);
+
                     return new NotificationResponseMessage()
                     {
                         Id = createNotification.Id,

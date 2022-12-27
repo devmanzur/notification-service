@@ -9,6 +9,10 @@ namespace BreakingNewsService.Controllers;
 [Route("api/[controller]")]
 public class BreakingNewsController : ControllerBase
 {
+    /// <summary>
+    /// This is the aggregate plugin, this encapsulates multiple notification plugins within it
+    /// Useful when we want to send notifications to multiple channels
+    /// </summary>
     private readonly AggregateNotificationPlugin _aggregatePlugin;
 
     private readonly string[] _subscribedEmails = new[] { "manzur@gmail.com", "dotnetdev@gmail.com", "dummyuser@gmail.com" };
@@ -25,6 +29,11 @@ public class BreakingNewsController : ControllerBase
             .Build();
     }
 
+    /// <summary>
+    /// Creates breaking news, and sends notifications to all emails and devices listed above
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<ActionResult<List<Guid>>> CreateBreakingNews([FromBody] BreakingNewsRequest request)
     {

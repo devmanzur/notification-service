@@ -2,6 +2,9 @@
 
 namespace OrganizationNotificationPlugin.Models;
 
+/// <summary>
+/// Response returned from the notification service
+/// </summary>
 public class NotificationResponse
 {
     [JsonPropertyName("id")]

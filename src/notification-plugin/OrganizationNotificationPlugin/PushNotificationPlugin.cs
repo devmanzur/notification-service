@@ -3,28 +3,38 @@ using OrganizationNotificationPlugin.Models;
 using OrganizationNotificationPlugin.Utils;
 
 namespace OrganizationNotificationPlugin;
-
+/// <summary>
+/// Plugin to send push notifications
+/// </summary>
 public class PushNotificationPlugin : INotificationPlugin
 {
-    private readonly INotificationBroker _httpNotificationBroker;
+    private readonly INotificationBroker _notificationBroker;
 
-    public PushNotificationPlugin(INotificationBroker httpNotificationBroker)
+    public PushNotificationPlugin(INotificationBroker notificationBroker)
     {
-        _httpNotificationBroker = httpNotificationBroker;
+        _notificationBroker = notificationBroker;
     }
 
+    /// <summary>
+    /// Validates the notification type and constraints
+    /// Sends notification using the injected notification broker
+    /// </summary>
+    /// <param name="notification"></param>
+    /// <returns></returns>
     public async Task<Guid> SendNotificationAsync(AppNotification notification)
     {
         // validate push notification
         RuleValidator.Validate<AppNotification, AppPushNotificationValidator>(notification);
 
         // Send the email notification
-        var response = await _httpNotificationBroker.PublishAsync(notification);
+        var response = await _notificationBroker.PublishAsync(notification);
 
         return response.Id;
     }
 }
-
+/// <summary>
+/// Validates the notification object is a valid push notification
+/// </summary>
 class AppPushNotificationValidator : BaseFluentValidator<AppNotification>
 {
     public AppPushNotificationValidator()

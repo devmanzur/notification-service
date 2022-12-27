@@ -3,7 +3,9 @@ using System.Net.Http.Json;
 using System.Text;
 
 namespace OrganizationNotificationPlugin.Utils;
-
+/// <summary>
+/// HTTP Client extensions that makes making api calls easy
+/// </summary>
 public static class HttpClientExtensions
 {
     private static string BuildQuery(List<(string Key, string Value)> parameters)
@@ -34,8 +36,7 @@ public static class HttpClientExtensions
                 new StringContent(requestModel.JsonBody, Encoding.UTF8, "application/json"));
         if (response.IsSuccessStatusCode)
         {
-            var stringContent = await response.Content.ReadAsStringAsync();
-            return AppJsonUtils.Deserialize<T>(stringContent) ?? throw new Exception("Failed to parse response");
+            return await response.Content.ReadFromJsonAsync<T>() ?? throw new Exception("Failed to parse response");
         }
 
         var error = await response.Content.ReadAsStringAsync();

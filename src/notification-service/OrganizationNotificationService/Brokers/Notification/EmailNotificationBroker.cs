@@ -5,7 +5,9 @@ using OrganizationNotificationService.Features.SendNotification;
 using OrganizationNotificationService.Models;
 
 namespace OrganizationNotificationService.Brokers.Notification;
-
+/// <summary>
+/// Broker that communicates with SMTP service
+/// </summary>
 public class EmailNotificationBroker : INotificationBroker
 {
     private readonly ILogger<EmailNotificationBroker> _logger;

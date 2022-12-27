@@ -4,7 +4,8 @@ using Quartz;
 namespace OrganizationNotificationService.BackgroundServices.Jobs;
 
 /// <summary>
-/// Finds pending notifications and dispatches them
+/// Quartz.NET Based Cron Job
+/// Finds pending notifications and dispatches them to corresponding service, SMTP, FCM etc
 /// </summary>
 public class SendPendingNotificationsJob : IJob
 {

@@ -1,4 +1,6 @@
 using OrganizationNotificationService.Configurations;
+using OrganizationNotificationService.Middlewares;
+using OrganizationNotificationService.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseFactoryMiddleware<ExceptionFormattingMiddleware>();
+app.UseFactoryMiddleware<RequestResponseLoggingMiddleware>();
 
 app.UseAuthorization();
 

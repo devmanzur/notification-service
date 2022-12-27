@@ -21,6 +21,12 @@ public partial class NotificationService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Returns the notification properties if found
+    /// Otherwise returns null
+    /// </summary>
+    /// <param name="notificationId">Id of the notification</param>
+    /// <returns></returns>
     public async Task<NotificationResponse?> GetNotificationStatus(Guid notificationId)
     {
         var notification =
@@ -34,6 +40,10 @@ public partial class NotificationService
         return new NotificationResponse(notification);
     }
 
+    /// <summary>
+    /// Returns list of notifications whose Status is set to "Pending"
+    /// </summary>
+    /// <returns>list of notifications</returns>
     public async Task<List<ApplicationNotification>> GetPendingNotifications()
     {
         return await _dbContext.Notifications.AsNoTracking().Where(x => x.Status == NotificationStatus.Pending)

@@ -4,17 +4,21 @@ using OrganizationNotificationPlugin.Utils;
 
 namespace OrganizationNotificationPlugin;
 
+/// <summary>
+/// Plugin to send email notifications
+/// </summary>
 public class EmailNotificationPlugin : INotificationPlugin
 {
-    private readonly INotificationBroker _httpNotificationBroker;
+    private readonly INotificationBroker _notificationBroker;
 
-    public EmailNotificationPlugin(INotificationBroker httpNotificationBroker)
+    public EmailNotificationPlugin(INotificationBroker notificationBroker)
     {
-        _httpNotificationBroker = httpNotificationBroker;
+        _notificationBroker = notificationBroker;
     }
 
     /// <summary>
-    /// 
+    /// Validates the notification type and constraints
+    /// Sends notification using the injected notification broker
     /// </summary>
     /// <param name="notification"></param>
     /// <returns></returns>
@@ -24,12 +28,15 @@ public class EmailNotificationPlugin : INotificationPlugin
         RuleValidator.Validate<AppNotification, AppEmailNotificationValidator>(notification);
 
         // Send the email notification
-        var response = await _httpNotificationBroker.PublishAsync(notification);
+        var response = await _notificationBroker.PublishAsync(notification);
 
         return response.Id;
     }
 }
 
+/// <summary>
+/// Validates the notification object is a valid email
+/// </summary>
 class AppEmailNotificationValidator : BaseFluentValidator<AppNotification>
 {
     public AppEmailNotificationValidator()

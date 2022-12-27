@@ -5,6 +5,11 @@ namespace OrganizationNotificationService.Features.SendNotification;
 
 public partial class NotificationService
 {
+    /// <summary>
+    /// Validates and saves the notification to database
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     public async Task<NotificationResponse> AddNewEmailNotification(NotificationRequest request)
     {
         var notification = new ApplicationNotification(request.Recipient, request.Title, request.Body,
@@ -19,6 +24,11 @@ public partial class NotificationService
         return new NotificationResponse(notification);
     }
 
+    /// <summary>
+    /// Validates and saves the notification to database
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     public async Task<NotificationResponse> AddNewPushNotification(NotificationRequest request)
     {
         var notification = new ApplicationNotification(request.Recipient, request.Title, request.Body,

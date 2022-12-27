@@ -2,7 +2,9 @@
 using OrganizationNotificationService.Utils;
 
 namespace OrganizationNotificationService.Models;
-
+/// <summary>
+/// Model that is used to send API requests to notification service
+/// </summary>
 public class NotificationRequest
 {
     public string Recipient { get; set; }

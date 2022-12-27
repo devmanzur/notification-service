@@ -3,7 +3,9 @@ using OrganizationNotificationService.Features.SendNotification;
 using OrganizationNotificationService.Models;
 
 namespace OrganizationNotificationService.Brokers.Notification;
-
+/// <summary>
+/// Broker that communicates with Push notification service such as FCM or APN
+/// </summary>
 public class PushNotificationBroker : INotificationBroker
 {
     private readonly ILogger<PushNotificationBroker> _logger;

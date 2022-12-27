@@ -23,7 +23,9 @@ internal class ApplicationCustomJsonConverter<T> : JsonConverter<T> where T : cl
         throw new NotImplementedException();
     }
 }
-
+/// <summary>
+/// JSON Serializer used by application to provide single api for serialization and de-serialization concerns
+/// </summary>
 public static class AppJsonUtils
 {
     public static JsonSerializerOptions GetSerializerOptions(){

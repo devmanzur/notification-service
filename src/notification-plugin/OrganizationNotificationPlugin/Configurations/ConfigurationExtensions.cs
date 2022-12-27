@@ -1,5 +1,4 @@
 ﻿using EasyNetQ;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrganizationNotificationPlugin.Brokers;
 using OrganizationNotificationPlugin.Exceptions;
@@ -9,31 +8,63 @@ namespace OrganizationNotificationPlugin.Configurations;
 
 public static class ConfigurationExtensions
 {
-    private const string ServerUrl = "ServerUrl";
-    private const string QueueConnectionStringKey = "ConnectionString";
-
+    /// <summary>
+    ///  Injects a REST API based broker to communicate with notification service
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="serverUrl">Server Address of the notification service</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException">Thrown when server url is null</exception>
     public static IServiceCollection AddNotificationPluginWithSyncBroker(this IServiceCollection services,
-        IConfiguration configuration, string configKey)
+        string? serverUrl)
     {
-        if (services.Any(x => x.ServiceType == typeof(INotificationPlugin)))
+        if (string.IsNullOrEmpty(serverUrl) || string.IsNullOrWhiteSpace(serverUrl))
         {
-            throw new InvalidActionException("Multiple communication channels injected for sending messages",
-                $"Implementation for Service type {typeof(INotificationBroker)} already injected");
+            throw new ArgumentNullException(serverUrl,
+                "server url not defined within the provided configuration body");
         }
+        
+        AddBasicConfigurations(services);
         
         services.AddScoped<INotificationBroker, HttpNotificationBroker>();
         services.AddHttpClient(PluginConstants.ClientName, c =>
-            c.BaseAddress = new Uri(configuration.GetSection(configKey)[ServerUrl] ??
-                                    throw new ArgumentNullException(ServerUrl,
-                                        "ServerUrl not defined within the provided configuration body")));
-        services.AddScoped<INotificationPlugin, EmailNotificationPlugin>();
-        services.AddScoped<INotificationPlugin, PushNotificationPlugin>();
+            c.BaseAddress = new Uri(serverUrl));
 
         return services;
     }
 
-    public static IServiceCollection AddNotificationPluginWithAsyncBroker(this IServiceCollection services,
-        IConfiguration configuration, string configKey)
+    /// <summary>
+    ///  Injects a RabbitMQ based broker to communicate with notification service
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="connectionString"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException">Thrown when server url is null</exception>
+    public static IServiceCollection AddNotificationPluginWithAsyncBroker(this IServiceCollection services,string? connectionString)
+    {
+        if (string.IsNullOrEmpty(connectionString) || string.IsNullOrWhiteSpace(connectionString))
+        {
+            throw new ArgumentNullException(connectionString,
+                "connection string not defined within the provided configuration body");
+        }
+        
+        AddBasicConfigurations(services);
+
+        // easyNetQ
+        var bus = RabbitHutch.CreateBus(connectionString,
+            x => x.EnableSystemTextJson(AppJsonUtils.GetSerializerOptions()));
+        services.AddSingleton(bus);
+        services.AddScoped<INotificationBroker, MessageQueueNotificationBroker>();
+
+        return services;
+    }
+
+    /// <summary>
+    /// Injects the basic files required for the plugin to work
+    /// </summary>
+    /// <param name="services"></param>
+    /// <exception cref="InvalidActionException"></exception>
+    private static void AddBasicConfigurations(IServiceCollection services)
     {
         if (services.Any(x => x.ServiceType == typeof(INotificationPlugin)))
         {
@@ -41,17 +72,7 @@ public static class ConfigurationExtensions
                 $"Implementation for Service type {typeof(INotificationBroker)} already injected");
         }
 
-        // easyNetQ
-        
-        var bus = RabbitHutch.CreateBus(configuration.GetSection(configKey)[QueueConnectionStringKey] ??
-                                        throw new ArgumentNullException(QueueConnectionStringKey,
-                                            "QueueConnectionString not defined within the provided configuration body"),
-            x => x.EnableSystemTextJson(AppJsonUtils.GetSerializerOptions()));
-        services.AddSingleton(bus);
-
         services.AddScoped<INotificationPlugin, EmailNotificationPlugin>();
         services.AddScoped<INotificationPlugin, PushNotificationPlugin>();
-        services.AddScoped<INotificationBroker, MessageQueueNotificationBroker>();
-        return services;
     }
 }

@@ -6,6 +6,11 @@ namespace OrganizationNotificationService.Features.SendNotification;
 
 public partial class NotificationService
 {
+    /// <summary>
+    /// Sends the notification to its appropriate destination depending on the notification type
+    /// </summary>
+    /// <param name="notification"></param>
+    /// <exception cref="InvalidActionException"></exception>
     public async Task SendNotification(ApplicationNotification notification)
     {
         try

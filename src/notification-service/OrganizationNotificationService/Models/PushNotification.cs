@@ -3,7 +3,9 @@ using OrganizationNotificationService.Exceptions;
 using OrganizationNotificationService.Utils;
 
 namespace OrganizationNotificationService.Models;
-
+/// <summary>
+/// Push notification value object
+/// </summary>
 public class PushNotification
 {
     public string DeviceRegistrationToken { get; private set; }

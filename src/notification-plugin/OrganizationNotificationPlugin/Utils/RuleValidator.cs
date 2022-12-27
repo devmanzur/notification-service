@@ -2,6 +2,9 @@
 
 namespace OrganizationNotificationPlugin.Utils;
 
+/// <summary>
+/// Fluent validation utility class to make validations easy
+/// </summary>
 public static class RuleValidator
 {
     public static void Validate<T, TV>(T instance) where T : class where TV : IValidator<T>, new()

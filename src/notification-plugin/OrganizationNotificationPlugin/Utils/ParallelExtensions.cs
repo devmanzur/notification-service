@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks.Dataflow;
 
 namespace OrganizationNotificationPlugin.Utils;
-
+/// <summary>
+/// Task parallel extension to process list in parallel
+/// </summary>
 public static class ParallelExtensions
 {
 

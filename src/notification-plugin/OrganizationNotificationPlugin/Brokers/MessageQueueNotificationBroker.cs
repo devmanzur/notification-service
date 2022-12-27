@@ -5,8 +5,15 @@ using OrganizationNotificationPlugin.Models;
 
 namespace OrganizationNotificationPlugin.Brokers;
 
+/// <summary>
+/// Broker for the notification service, this uses RabbitMQ Messages to communicate with our notifications service
+/// This uses the AMQP RPC protocol because we expect a response from our service
+/// </summary>
 public class MessageQueueNotificationBroker : INotificationBroker
 {
+    /// <summary>
+    /// RabbitMQ bus provided by EasyNetQ
+    /// </summary>
     private readonly IBus _bus;
     private readonly ILogger<MessageQueueNotificationBroker> _logger;
 
@@ -16,6 +23,12 @@ public class MessageQueueNotificationBroker : INotificationBroker
         _logger = logger;
     }
 
+    /// <summary>
+    /// Published the notification to notification service using rabbitMq,
+    /// When the response is ready this thread receives the response and sends it back to caller
+    /// </summary>
+    /// <param name="notification"></param>
+    /// <returns></returns>
     public async Task<NotificationResponse> PublishAsync(AppNotification notification)
     {
         var request = new NotificationMessage()
@@ -28,7 +41,6 @@ public class MessageQueueNotificationBroker : INotificationBroker
         };
         var response = await _bus.Rpc.RequestAsync<NotificationMessage, NotificationResponseMessage>(request);
 
-        // Console.WriteLine($"Received response, notification id: {response.Id} ");        
         _logger.LogInformation("Received response, notification id: {NotificationId}",response.Id);
         
         return new NotificationResponse

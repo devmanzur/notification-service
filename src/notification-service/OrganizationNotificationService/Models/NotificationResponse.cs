@@ -1,5 +1,8 @@
 ﻿namespace OrganizationNotificationService.Models;
 
+/// <summary>
+/// Model notification service uses to respond with
+/// </summary>
 public class NotificationResponse
 {
     public string Id { get; set; }

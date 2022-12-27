@@ -2,6 +2,10 @@
 
 namespace OrganizationNotificationPlugin;
 
+/// <summary>
+/// The marker interface for all notification plugins
+/// If a plugin does not implement this it wont be able to be used with the aggregate plugin
+/// </summary>
 public interface INotificationPlugin
 {
     /// <summary>
