@@ -38,5 +38,6 @@ services:
       - "NotificationPlugin:ConnectionString=host=rabbitmq"
     depends_on:
       - rabbitmq
+      - notification.api
     ports:
       - "8001:80"
