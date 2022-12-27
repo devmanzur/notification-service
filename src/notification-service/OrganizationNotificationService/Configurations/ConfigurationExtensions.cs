@@ -5,6 +5,7 @@ using OrganizationNotificationService.BackgroundServices.Jobs;
 using OrganizationNotificationService.Brokers.Notification;
 using OrganizationNotificationService.Brokers.Persistence;
 using OrganizationNotificationService.Features.SendNotification;
+using OrganizationNotificationService.Utils;
 using Quartz;
 
 namespace OrganizationNotificationService.Configurations;
@@ -58,8 +59,9 @@ public static class ConfigurationExtensions
         //easyNetQ
         var bus = RabbitHutch.CreateBus(configuration.GetSection("RabbitMq")[QueueConnectionStringKey] ??
                                         throw new ArgumentNullException(QueueConnectionStringKey,
-                                            "QueueConnectionString not defined within the provided configuration body"));
+                                            "QueueConnectionString not defined within the provided configuration body"),
+            x=> x.EnableSystemTextJson(AppJsonUtils.GetSerializerOptions()));
         services.AddSingleton(bus);
-        services.AddHostedService<MessageQueueSubscriber>();
+        services.AddHostedService<AddNotificationEventListenerBackgroundService>();
     }
 }

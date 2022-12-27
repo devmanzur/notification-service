@@ -42,9 +42,11 @@ public static class ConfigurationExtensions
         }
 
         // easyNetQ
+        
         var bus = RabbitHutch.CreateBus(configuration.GetSection(configKey)[QueueConnectionStringKey] ??
                                         throw new ArgumentNullException(QueueConnectionStringKey,
-                                            "QueueConnectionString not defined within the provided configuration body"));
+                                            "QueueConnectionString not defined within the provided configuration body"),
+            x => x.EnableSystemTextJson(AppJsonUtils.GetSerializerOptions()));
         services.AddSingleton(bus);
 
         services.AddScoped<INotificationPlugin, EmailNotificationPlugin>();

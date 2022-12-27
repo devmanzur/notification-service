@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace OrganizationNotificationPlugin.Utils;
+namespace OrganizationNotificationService.Utils;
 
 internal class ApplicationCustomJsonConverter<T> : JsonConverter<T> where T : class
 {
