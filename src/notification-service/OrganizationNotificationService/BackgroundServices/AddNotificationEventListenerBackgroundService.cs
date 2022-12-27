@@ -73,67 +73,69 @@ public class AddNotificationEventListenerBackgroundService : BackgroundService
     /// <exception cref="DomainValidationException"></exception>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        try
+        if (!_bus.Advanced.IsConnected)
         {
-            await _bus.Rpc.RespondAsync<NotificationMessage, NotificationResponseMessage>(async message =>
+            // Allow it 1 minute to establish connection
+            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+            _logger.LogInformation("{ServiceName} started execution",
+                nameof(AddNotificationEventListenerBackgroundService));
+        }
+
+        await _bus.Rpc.RespondAsync<NotificationMessage, NotificationResponseMessage>(async message =>
+            {
+                try
                 {
-                    try
+                    var request = new NotificationRequest()
                     {
-                        var request = new NotificationRequest()
-                        {
-                            NotificationType = message.NotificationType!,
-                            Body = message.Body!,
-                            Recipient = message.Recipient!,
-                            Title = message.Recipient!,
-                            ContentType = message.ContentType!
-                        };
+                        NotificationType = message.NotificationType!,
+                        Body = message.Body!,
+                        Recipient = message.Recipient!,
+                        Title = message.Recipient!,
+                        ContentType = message.ContentType!
+                    };
 
-                        RuleValidator.Validate<NotificationRequest, NotificationRequestValidator>(request);
+                    RuleValidator.Validate<NotificationRequest, NotificationRequestValidator>(request);
 
-                        using var scope = _scope.ServiceProvider.CreateScope();
-                        var dbContext = scope.ServiceProvider.GetService<NotificationDbContext>();
+                    using var scope = _scope.ServiceProvider.CreateScope();
+                    var dbContext = scope.ServiceProvider.GetService<NotificationDbContext>();
 
-                        var createNotification = request.GetType() switch
-                        {
-                            NotificationType.Email => await AddNewEmailNotification(dbContext!, request),
-                            NotificationType.PushNotification => await AddNewPushNotification(dbContext!,
-                                request),
-                            _ => throw new DomainValidationException("Invalid Notification type",
-                                "Attempted to create unsupported notification type")
-                        };
-
-                        _logger.LogInformation("Notification saved, {NotificationId}", createNotification.Id);
-
-                        return new NotificationResponseMessage()
-                        {
-                            Id = createNotification.Id,
-                            Recipient = createNotification.Recipient,
-                            NotificationType = createNotification.NotificationType,
-                            ContentType = createNotification.ContentType,
-                            Title = createNotification.Title,
-                            Status = createNotification.Status,
-                            Body = createNotification.Body,
-                            CreatedAt = createNotification.CreatedAt!
-                        };
-                    }
-                    catch (DomainValidationException e)
+                    var createNotification = request.GetType() switch
                     {
-                        _logger.LogError(e, e.Message);
+                        NotificationType.Email => await AddNewEmailNotification(dbContext!, request),
+                        NotificationType.PushNotification => await AddNewPushNotification(dbContext!,
+                            request),
+                        _ => throw new DomainValidationException("Invalid Notification type",
+                            "Attempted to create unsupported notification type")
+                    };
 
+                    _logger.LogInformation("Notification saved, {NotificationId}", createNotification.Id);
 
-                        return new NotificationResponseMessage()
-                        {
-                            Id = null,
-                            Body = e.Message
-                        };
-                    }
+                    return new NotificationResponseMessage()
+                    {
+                        Id = createNotification.Id,
+                        Recipient = createNotification.Recipient,
+                        NotificationType = createNotification.NotificationType,
+                        ContentType = createNotification.ContentType,
+                        Title = createNotification.Title,
+                        Status = createNotification.Status,
+                        Body = createNotification.Body,
+                        CreatedAt = createNotification.CreatedAt!
+                    };
                 }
-                , cancellationToken: stoppingToken);
-        }
-        catch (Exception e)
-        {
-            // Handling any unexpected exceptions here, so the application does not close if background service crashes
-            _logger.LogError(e, e.Message);
-        }
+                catch (DomainValidationException e)
+                {
+                    _logger.LogError(e, e.Message);
+
+
+                    return null;
+                }
+                catch (Exception e)
+                {
+                    // Handling any unexpected exceptions here, so the application does not close if background service crashes
+                    _logger.LogError(e, e.Message);
+                    return null;
+                }
+            }
+            , cancellationToken: stoppingToken);
     }
 }
