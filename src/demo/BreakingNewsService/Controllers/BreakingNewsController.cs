@@ -15,17 +15,19 @@ public class BreakingNewsController : ControllerBase
     /// </summary>
     private readonly AggregateNotificationPlugin _aggregatePlugin;
 
-    private readonly string[] _subscribedEmails = new[] { "manzur@gmail.com", "dotnetdev@gmail.com", "dummyuser@gmail.com" };
+    private readonly string[] _subscribedEmails = new[]
+        { "manzur@gmail.com", "dotnetdev@gmail.com", "dummyuser@gmail.com" };
 
     private readonly string[] _subscribedDeviceRegistrationTokens = new[]
         { "device-12654dfdfd", "device-68867684564545dfdsfsd", "device-5645646dfsdfsdf6sdf5" };
 
 
-    public BreakingNewsController(INotificationBroker broker)
+    public BreakingNewsController(EmailNotificationPlugin emailNotificationPlugin,
+        PushNotificationPlugin pushNotificationPlugin)
     {
         _aggregatePlugin = AggregateNotificationPluginBuilder.Create()
-            .WithEmailPlugin(new EmailNotificationPlugin(broker))
-            .WithPushNotificationPlugin(new PushNotificationPlugin(broker))
+            .WithEmailPlugin(emailNotificationPlugin)
+            .WithPushNotificationPlugin(pushNotificationPlugin)
             .Build();
     }
 
@@ -65,7 +67,7 @@ public class BreakingNewsController : ControllerBase
         }
 
         var responses = await _aggregatePlugin.SendNotificationsAsync(notifications);
-        
+
         return Ok(responses);
     }
 }

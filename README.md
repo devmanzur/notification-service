@@ -66,11 +66,12 @@
 - To use the ```AggregateNotificationPlugin``` its builder needs to be used, here is an example:
 - ```csharp
     // Injected from DI
-    INotificationBroker broker;
+    EmailPlugin _emailPlugin;
+    PushNotificationPlugin _pushNotificationPlugin;
   
     var aggregatePlugin = AggregateNotificationPluginProvider.Create()
-                          .WithEmailPlugin(new EmailNotificationPlugin(broker))
-                          .WithPushNotificationPlugin(new PushNotificationPlugin(broker))
+                          .WithEmailPlugin(_emailPlugin)
+                          .WithPushNotificationPlugin(_pushNotificationPlugin)
                           .Build();
   
     // To send notifications
