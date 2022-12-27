@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using OrganizationNotificationPlugin.Brokers.Models;
 using OrganizationNotificationPlugin.Models;
 using OrganizationNotificationPlugin.Utils;
@@ -10,10 +11,12 @@ namespace OrganizationNotificationPlugin.Brokers;
 public class HttpNotificationBroker : INotificationBroker
 {
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly ILogger<HttpNotificationBroker> _logger;
 
-    public HttpNotificationBroker(IHttpClientFactory  httpClientFactory)
+    public HttpNotificationBroker(IHttpClientFactory httpClientFactory, ILogger<HttpNotificationBroker> logger)
     {
         _httpClientFactory = httpClientFactory;
+        _logger = logger;
     }
 
     /// <summary>
@@ -24,14 +27,25 @@ public class HttpNotificationBroker : INotificationBroker
     /// <exception cref="HttpRequestException">Thrown when the response was not successful</exception>
     public async Task<NotificationResponse> PublishAsync(AppNotification notification)
     {
-        var client = _httpClientFactory.CreateClient(PluginConstants.ClientName);
-        var response = await client.SendPostRequestAsync<EnvelopeResponse<NotificationResponse>>(
-            new RequestModel($"api/notifications").AddJsonBody(notification));
-        if (response.IsSuccess)
+        try
         {
-            return response.Body;
-        }
+            var client = _httpClientFactory.CreateClient(PluginConstants.ClientName);
+            var response = await client.SendPostRequestAsync<EnvelopeResponse<NotificationResponse>>(
+                new RequestModel($"api/notifications").AddJsonBody(notification));
+            if (response.IsSuccess)
+            {
+                _logger.LogInformation("Received successful response");
+                return response.Body;
+            }
 
-        throw new HttpRequestException( "Failed to complete request");
+            throw new HttpRequestException("Failed to complete request");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e,
+                "An error occurred while communicating with notification service, error: {Error}, notification type: {NotificationType}",
+                e.Message, notification.NotificationType.ToString());
+            throw;
+        }
     }
 }

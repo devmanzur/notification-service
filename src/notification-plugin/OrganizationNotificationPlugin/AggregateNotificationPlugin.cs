@@ -7,6 +7,7 @@ namespace OrganizationNotificationPlugin;
 
 /// <summary>
 /// The aggregate plugin to combine and use multiple plugins at once
+/// </summary>
 /// <example>
 //      var aggregatePlugin = AggregateNotificationPluginProvider.Create()
 //     .WithEmailPlugin(new EmailNotificationPlugin(broker))
@@ -14,7 +15,6 @@ namespace OrganizationNotificationPlugin;
 //     .Build();
 // aggregatePlugin.SendNotificationsAsync(_notification);
 /// </example>
-/// </summary>
 public class AggregateNotificationPlugin
 {
     private readonly Dictionary<NotificationType, INotificationPlugin> _notificationPlugins;

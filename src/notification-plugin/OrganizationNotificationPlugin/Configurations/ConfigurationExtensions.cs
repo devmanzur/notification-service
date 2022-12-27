@@ -72,7 +72,7 @@ public static class ConfigurationExtensions
                 $"Implementation for Service type {typeof(INotificationBroker)} already injected");
         }
 
-        services.AddScoped<INotificationPlugin, EmailNotificationPlugin>();
-        services.AddScoped<INotificationPlugin, PushNotificationPlugin>();
+        services.AddScoped<EmailNotificationPlugin>();
+        services.AddScoped<PushNotificationPlugin>();
     }
 }

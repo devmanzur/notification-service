@@ -31,28 +31,38 @@ public class MessageQueueNotificationBroker : INotificationBroker
     /// <returns></returns>
     public async Task<NotificationResponse> PublishAsync(AppNotification notification)
     {
-        var request = new NotificationMessage()
+        try
         {
-            Recipient = notification.Recipient,
-            NotificationType = notification.NotificationType.ToString(),
-            Body = notification.Body,
-            Title = notification.Title,
-            ContentType = notification.ContentType.ToString()
-        };
-        var response = await _bus.Rpc.RequestAsync<NotificationMessage, NotificationResponseMessage>(request);
+            var request = new NotificationMessage()
+            {
+                Recipient = notification.Recipient,
+                NotificationType = notification.NotificationType.ToString(),
+                Body = notification.Body,
+                Title = notification.Title,
+                ContentType = notification.ContentType.ToString()
+            };
+            var response = await _bus.Rpc.RequestAsync<NotificationMessage, NotificationResponseMessage>(request);
 
-        _logger.LogInformation("Received response, notification id: {NotificationId}",response.Id);
+            _logger.LogInformation("Received response, notification id: {NotificationId}",response.Id);
         
-        return new NotificationResponse
+            return new NotificationResponse
+            {
+                Id = Guid.Parse(response.Id!),
+                Recipient = response.Recipient,
+                NotificationType = response.NotificationType,
+                ContentType = response.ContentType,
+                Title = response.Title,
+                Status = response.Status,
+                Body = response.Body,
+                CreatedAt = DateTimeOffset.Parse(response.CreatedAt)
+            };
+        }
+        catch (Exception e)
         {
-            Id = Guid.Parse(response.Id!),
-            Recipient = response.Recipient,
-            NotificationType = response.NotificationType,
-            ContentType = response.ContentType,
-            Title = response.Title,
-            Status = response.Status,
-            Body = response.Body,
-            CreatedAt = DateTimeOffset.Parse(response.CreatedAt)
-        };
+            _logger.LogError(e,
+                "An error occurred while communicating with notification service, error: {Error}, notification type: {NotificationType}",
+                e.Message, notification.NotificationType.ToString());
+            throw;
+        }
     }
 }
