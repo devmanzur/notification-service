@@ -24,9 +24,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "ConnectionStrings:NotificationServiceDatabase=Server=notification.db;Database=NotificationDb;User Id=sa;Password=SwN12345678;TrustServerCertificate=true"
+      - "RabbitMq:ConnectionString=host=rabbitmq"
     depends_on:
       - notification.db
-#      - rabbitmq
+      - rabbitmq
     ports:
       - "8000:80"
   breakingnews.api:
@@ -34,7 +35,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "NotificationPlugin:ServerUrl=http://notification.api"
-#    depends_on:
-#      - rabbitmq
+      - "NotificationPlugin:ConnectionString=host=rabbitmq"
+    depends_on:
+      - rabbitmq
     ports:
       - "8001:80"

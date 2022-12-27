@@ -6,6 +6,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["demo/BreakingNewsService/BreakingNewsService.csproj", "demo/BreakingNewsService/"]
 COPY ["notification-plugin/OrganizationNotificationPlugin/OrganizationNotificationPlugin.csproj", "notification-plugin/OrganizationNotificationPlugin/"]
+COPY ["shared/BreakingNews.Messages/BreakingNews.Messages.csproj", "shared/BreakingNews.Messages/"]
 RUN dotnet restore "demo/BreakingNewsService/BreakingNewsService.csproj"
 COPY . .
 WORKDIR "/src/demo/BreakingNewsService"
