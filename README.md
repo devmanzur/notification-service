@@ -1,6 +1,15 @@
 # Breaking News Organization Notification Service
 
-## Tasks
+## Table Of Contents
+- [Requirements](#requirements)
+- [Requirement Breakdown](#requirement-Breakdown)
+- [Execution Plan](#execution-plan)
+- [Tools](#tools)
+- [Notification Plugin Implementation and usage](#notification-plugin-implementation-and-usage)
+- [Notification Service Implementation](#notification-service-implementation)
+- [How to run the test project](#how-to-run-the-test-project)
+
+## Requirements
 - Develop a notifications service (Email and Push notifications), the service must be extensible with support for future notification providers such as SMS notifications, Slack Notifications, and others.
 - **The plugin shall be developed as a C# class library** and you can use Pseudo code for SMTP, SMS API, etc.. just make sure that the code is clear, and we can understand the flow you have in mind
 - Keep in mind that t**his service will be used as a plugin** by other developers in your organization, on multiple and varied projects, try your best to make it extensible, compatible, and developer friendly.
@@ -46,7 +55,7 @@
 - ~~Github CI~~
 - Quartz.NET for cron job
 
-## Plugin Implementation and usage
+## Notification Plugin Implementation and usage
 - The plugin is used by adding reference to the class library and using one of its configurations extensions
 - ``AddNotificationPluginWithSyncBroker(this IServiceCollection services,
   string? serverUrl)`` For REST API Based communication or
@@ -100,17 +109,18 @@
     NotificationType.SlackNotification => await _slackNotificationBroker.SendNotification(notification),
   ```
 
-## How to run everything
+## How to run the test project
 - Clone the project from github
 - Go to the downloaded location
 - Open terminal and type in these commands
 - ```cd src```
+- ```docker-compose build```
 - ```docker-compose up -d```
 - After everything completes successfully (should take around 3-5 minutes), you should see 2 applications running on localhost 8000 and 80001 ports
 - on Port 8000 is the notification service
 - on Port 8001 is a demo service named BreakingNews service
 - now if you go to http://localhost:8001/swagger you should see a swagger interactive doc with only 1 API endpoint
-- In the request body field, clear the field and paste this:
+- In the request body field, replace contents of the body with this:
   ```
   {
     "headline": "Hello",
@@ -129,6 +139,6 @@
         ]
   ```  
 - These Ids represent notifications that have been created in response to this Breaking News
-- To check their status you can go to http://localhost:8001/swagger and use the ```api/notifications``` GET endpoint and paste any of the GUID id there
+- To check their status you can go to http://localhost:8000/swagger and use the ```api/notifications``` GET endpoint and paste any of the GUID id there
 - You should get the details of the notification with its current status
 - Please note, it might take up to 3 minutes for the notification to be dispatched
